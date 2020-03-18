@@ -5,7 +5,7 @@ import models.Account;
 import java.util.ArrayList;
 
 public class AccountController {
-    ArrayList<Account> accounts;
+    private ArrayList<Account> accounts;
 
 
     public AccountController(ArrayList<Account> accounts) {
@@ -43,7 +43,20 @@ public class AccountController {
         Account account = checkValidNumber(accountNumber);
         if (account == null) throw new Exception("invalid number, account does not exists");
         else{
-            return (account.getBalance() * account.getIntrestRate()) - account.getBalance();
+            return ((account.getBalance() /100) * account.getIntrestRate());
         }
+    }
+    public void TranferFunds(int accountTranferFrom, int accountToRecieve, double amount)throws Exception{
+        Account withdrawAccount = checkValidNumber(accountTranferFrom);
+        if (withdrawAccount == null) throw new Exception("invalid number, withdraw account does not exists");
+        Account recieveAccount = checkValidNumber(accountToRecieve);
+        if (recieveAccount == null) throw new Exception("invalid number, receiving account does not exists");
+
+        if(withdrawAccount.getBalance() - amount < 0) throw new Exception("insufficent funds");
+
+        withdrawAccount.setBalance(withdrawAccount.getBalance() -amount);
+        recieveAccount.setBalance(recieveAccount.getBalance() + amount);
+        accounts.add(accountTranferFrom, withdrawAccount);
+        accounts.add(accountToRecieve, recieveAccount);
     }
 }
