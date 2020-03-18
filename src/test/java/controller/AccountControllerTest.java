@@ -41,7 +41,7 @@ class AccountControllerTest {
 
     @Test
     void checkifInValidNumber() {
-        Assertions.assertNull(controller.checkValidNumber(2));
+        Assertions.assertNull(controller.checkValidNumber(3));
     }
 
     @Test
@@ -95,5 +95,34 @@ class AccountControllerTest {
             fail();
         }
         assertEquals(amount, 1800.00);
+    }
+
+    //COMMENT: niet de test die ik normaal zou maken, maar dit was een poging om het op een andere manier te organiseren.
+    @Test
+    void tranferFundsUnSuccesfullbecauseOfToLittleFunds() {
+        boolean check = false;
+        try {
+            controller.TranferFunds(1, 2, 3000);
+        } catch (Exception e) {
+            assertEquals("insufficent funds", e.getMessage());
+            check = true;
+
+        }
+        while (!check) {
+            fail();
+            check = true;
+        }
+    }
+
+    @Test
+    void tranferFundsUnsuccesfullinvalidRecieverID() {
+        Throwable exception = assertThrows(Exception.class, () -> controller.TranferFunds(1,3, 200));
+        Assertions.assertEquals("invalid number, receiving account does not exists", exception.getMessage());
+    }
+
+    @Test
+    void tranferFundsUnsuccesfullinvalidWhitdrawID() {
+        Throwable exception = assertThrows(Exception.class, () -> controller.TranferFunds(4,2, 200));
+        Assertions.assertEquals("invalid number, withdraw account does not exists", exception.getMessage());
     }
 }

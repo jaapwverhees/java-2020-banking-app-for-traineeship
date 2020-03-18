@@ -41,7 +41,7 @@ public class Account {
         this.intrestRate = intrestRate;
     }
 
-    public String toString(){
+    public String toString() {
         DecimalFormat df = new DecimalFormat("###.##");
         return String.format("AccountNumber : %s \nBalance : %s \nIntrestRate : %s",
                 this.number, this.balance, df.format(this.intrestRate));
